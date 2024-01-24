@@ -48,9 +48,9 @@ def populate():
     
     cats = {
         
-        'Python': {'pages': python_pages},
-        'Django': {'pages': django_pages},
-        'Other Frameworks': {'pages': other_pages}
+        'Python': {'pages': python_pages, 'views': 128, 'likes': 64},
+        'Django': {'pages': django_pages, 'views': 64, 'likes': 32},
+        'Other Frameworks': {'pages': other_pages, 'views': 32, 'likes': 16}
             
         }
     
@@ -61,11 +61,18 @@ def populate():
         for p in cat_data['pages']:
             add_page(c, p['title'], p['url'])
             
+        for v in cat_data['views']:
+            add_page(c, v)
+            
+        #made the index variable 'likes' as a standalone l may not be clear, especially when using other editors and etc...    
+        for likes in cat_data['likes']:
+            add_page(c, likes) 
+            
     
     for c in Category.objects.all():
         for p in Page.objects.filter(category = c):
             
-            print(f'- {c}: {p}')
+            print(f'- {c}: {p}, {v}, {likes}')
             
             
 def add_page(cat, title, url, views = 0):
@@ -78,9 +85,9 @@ def add_page(cat, title, url, views = 0):
     
     return p
 
-def add_cat(name):
+def add_cat(name, views = 0, likes = 0):
     
-    c = Category.objects.get_or_create(name = name)[0]
+    c = Category.objects.get_or_create(name = name, views = views, likes = likes)[0]
     c.save()
     
     return c
