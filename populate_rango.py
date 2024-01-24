@@ -56,23 +56,17 @@ def populate():
     
     
     for cat, cat_data in cats.items():
-        c = add_cat(cat)
+        c = add_cat(cat, cat_data['views'], cat_data['likes'])
         
         for p in cat_data['pages']:
             add_page(c, p['title'], p['url'])
-            
-        for v in cat_data['views']:
-            add_page(c, v)
-            
-        #made the index variable 'likes' as a standalone l may not be clear, especially when using other editors and etc...    
-        for likes in cat_data['likes']:
-            add_page(c, likes) 
+        
             
     
     for c in Category.objects.all():
         for p in Page.objects.filter(category = c):
             
-            print(f'- {c}: {p}, {v}, {likes}')
+            print(f'- {c}: {p}')
             
             
 def add_page(cat, title, url, views = 0):
