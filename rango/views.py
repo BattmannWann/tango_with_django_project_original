@@ -1,11 +1,15 @@
 from django.shortcuts import render
-
 from django.http import HttpResponse
+
+from rango.models import Category
 
 def index(request):
     
-    #boldmessage matches to the {{ boldmessage }} in the template
-    context_dict = {'boldmessage': "Crunchy, creamy, cookie, candy, cupcake!"}
+    category_list = Category.objects.order_by('-likes')[:5]
+    
+    context_dict = {}
+    context_dict['boldmessage'] = "Crunchy, creamy, cookie, candy, cupcake!"
+    context_dict['categories'] = category_list
     
     #note that the first parameter below is the TEMPLATE WE WISH TO USE
     return render(request, 'rango/index.html', context = context_dict)
