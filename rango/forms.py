@@ -13,7 +13,7 @@ class CategoryForm(forms.ModelForm):
     
     class Meta:
         model = Category
-        fiels = ('name')
+        fields = ('name')
         
         
 
