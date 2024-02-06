@@ -11,6 +11,9 @@ from rango.forms import CategoryForm
 from rango.forms import PageForm
 from rango.forms import UserForm, UserProfileForm 
 
+from django.contrib.auth import authenticate, login
+
+
 
 def index(request):
     
@@ -27,10 +30,7 @@ def index(request):
 
 
 def about(request):
-    
-    context_dict = {'boldmessage': "This tutorial has been put together by Rhys Stewart."}
-    
-    return render(request, "rango/about.html", context = context_dict)
+    return render(request, "rango/about.html", context = {})
 
 
 
@@ -135,7 +135,7 @@ def register(request):
             registered = True
         
         else:
-            print(user_form.erros, profile_form.errors)
+            print(user_form.errors, profile_form.errors)
             
     else:
         user_form = UserForm()
@@ -147,3 +147,28 @@ def register(request):
                              'profile_form': profile_form, 
                              'registered': registered})
     
+    
+def user_login(request):
+    
+    if request.method == 'POST':
+        
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        user = authenticate(username=username, password=password)
+        
+        if user:
+            if user.is_active:
+                
+                login(request, user)
+                return redirect(reverse('rango:index'))
+
+            else:
+                return HttpResponse("Your Rango account is disabled.")
+            
+        else:
+            print(f"Invalid login details: {username}, {password}")
+            return HttpResponse("Invalid login details supplied")
+        
+    else:
+        return render(request, 'rango/login.html')
