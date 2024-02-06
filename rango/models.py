@@ -44,8 +44,7 @@ class Page(models.Model):
 class UserProfile(models.Model):
     
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    
-    wesbite = models.URLField(blank = True)
+    website = models.URLField(blank = True)
     picture = models.ImageField(upload_to='profile_images', blank = True)
     
     def __str__(self):
